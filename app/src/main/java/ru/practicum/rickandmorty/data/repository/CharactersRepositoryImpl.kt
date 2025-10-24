@@ -23,14 +23,21 @@ class CharactersRepositoryImpl(
     @OptIn(ExperimentalPagingApi::class)
     override fun getCharactersStream(params: QueryParams): Flow<PagingData<Character>> {
         return Pager(
-            config = PagingConfig(pageSize = 20),
+            config = PagingConfig(
+                pageSize = 20,
+                prefetchDistance = 5,
+            ),
             remoteMediator = CharacterRemoteMediator(
                 apiService = apiService,
                 database = database,
                 params = params
             ),
             pagingSourceFactory = {
-                database.characterDao().pagingSource(params.query)
+                database.characterDao().pagingSource(
+                    name = params.query,
+                    status = params.filters.status,
+                    gender = params.filters.gender,
+                )
             }
         ).flow.map { pagingData ->
             pagingData.map { entity ->

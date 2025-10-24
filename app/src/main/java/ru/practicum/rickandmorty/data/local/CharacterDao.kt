@@ -11,13 +11,23 @@ import kotlinx.coroutines.flow.Flow
 interface CharacterDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-   suspend fun insertAll(characters: List<CharacterEntity>)
+    suspend fun insertAll(characters: List<CharacterEntity>)
 
-   @Query("SELECT * FROM characters WHERE name LIKE '%' || :query || '%' ORDER BY id ASC")
-    fun pagingSource(query: String): PagingSource<Int, CharacterEntity>
-
-    @Query("DELETE FROM characters")
-    suspend fun clearAllCharacters()
+    @Query(
+        """
+            SELECT * FROM characters 
+            WHERE 
+                (:name IS NULL OR name LIKE '%' || :name || '%') AND 
+                (:status IS NULL OR status = :status) AND 
+                (:gender IS NULL OR gender = :gender) 
+            ORDER BY id ASC
+            """
+    )
+    fun pagingSource(
+        name: String?,
+        status: String?,
+        gender: String?
+    ): PagingSource<Int, CharacterEntity>
 
     @Query("SELECT * FROM characters WHERE id = :id")
     fun getCharacterById(id: Int): Flow<CharacterEntity>

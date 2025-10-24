@@ -38,7 +38,6 @@ class HomeScreenViewModel(
             initialValue = ConnectivityObserver.Status.Unavailable
         )
 
-
     @OptIn(FlowPreview::class, ExperimentalCoroutinesApi::class)
     val characters: Flow<PagingData<Character>> = combine(
         _searchQuery.debounce(500),

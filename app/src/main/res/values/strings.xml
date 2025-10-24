@@ -1,3 +1,111 @@
 <resources>
     <string name="app_name">Rick and Morty</string>
+    <!-- Nothing Found Screen -->
+    <string name="nothing_found_wubba">Wubba Lubba Dub Dub!</string>
+    <string name="nothing_found_query_and_filters">Even Rick\'s portal gun couldn\'t find any characters named \'%1$s\' that also match your filters. Try removing a filter!</string>
+    <string name="nothing_found_query_only">Even Rick\'s portal gun couldn\'t find anything for \'%1$s\'. Try another search!</string>
+    <string name="nothing_found_filters_only">There are no characters that match your current filters.</string>
+    <string name="nothing_found_fallback">There\'s nothing here… which is weird.</string>
+    <!-- Filters Screen -->
+    <string name="filters_title">Filters</string>
+    <string name="filters_apply">Apply Filters</string>
+    <string name="filters_back_description">Back</string>
+    <string name="filters_status_title">Status</string>
+    <string name="filters_gender_title">Gender</string>
+    <string name="filters_any_option">Any</string>
+    <!-- Filter Options -->
+    <string name="filter_option_alive">Alive</string>
+    <string name="filter_option_dead">Dead</string>
+    <string name="filter_option_female">Female</string>
+    <string name="filter_option_male">Male</string>
+    <string name="filter_option_genderless">Genderless</string>
+    <string name="filter_option_unknown">unknown</string>
+    <!-- Home Screen & Top Bar -->
+    <string name="home_title_characters">Characters</string>
+    <string name="search_placeholder">Search…</string>
+    <string name="search_characters">Search Characters</string>
+    <string name="close_search_icon_description">Close Search</string>
+    <string name="filters_fab_description">Show Filters</string>
+    <string name="snackbar_offline">You are offline</string>
+    <string name="snackbar_online">Back online!</string>
+    <!-- Action Buttons -->
+    <string name="action_retry">Retry</string>
+    <!-- Character Details Screen -->
+    <string name="details_title">Character Details</string>
+    <string name="details_back_description">Back</string>
+    <string name="details_error_message">Error: %1$s</string>
+    <string name="details_section_properties">Properties</string>
+    <string name="details_label_status">Status</string>
+    <string name="details_label_species">Species</string>
+    <string name="details_label_gender">Gender</string>
+    <string name="details_label_type">Type</string>
+    <string name="details_section_location">Location</string>
+    <string name="details_label_origin">Origin</string>
+    <string name="details_label_last_location">Last Known Location</string>
+    <string name="details_section_appearances">Appearances</string>
+    <string name="details_label_episode_count">Episode Count</string>
+    <!-- Character Item -->
+    <string name="character_item_status_species">%1$s - %2$s</string>
+    <string name="character_item_gender_label">Gender: %1$s</string>
+    <string name="character_item_image_description">Image of %1$s</string>
+    <!-- Species Options -->
+    <string name="species_human">Human</string>
+    <string name="species_alien">Alien</string>
+    <string name="species_humanoid">Humanoid</string>
+    <string name="species_poopybutthole">Poopybutthole</string>
+    <string name="species_mythological">Mythological Creature</string>
+    <string name="species_animal">Animal</string>
+    <string name="species_robot">Robot</string>
+    <string name="species_cronenberg">Cronenberg</string>
+    <string name="species_disease">Disease</string>
+    <!-- Location Names -->
+    <string name="location_citadel_of_ricks">Citadel of Ricks</string>
+    <string name="location_earth_replacement_dimension">Earth (Replacement Dimension)</string>
+    <string name="location_abadango">Abadango</string>
+    <string name="location_testicle_monster_dimension">Testicle Monster Dimension</string>
+    <string name="location_worldenders_lair">Worldender\'s lair</string>
+    <string name="location_anatomy_park">Anatomy Park</string>
+    <string name="location_interdimensional_cable">Interdimensional Cable</string>
+    <string name="location_immortality_field_resort">Immortality Field Resort</string>
+    <string name="location_signus_5_expanse">Signus 5 Expanse</string>
+    <string name="location_post_apocalyptic_earth">Post-Apocalyptic Earth</string>
+    <string name="location_purge_planet">Purge Planet</string>
+    <string name="location_venzenulon_7">Venzenulon 7</string>
+    <string name="location_bepis_9">Bepis 9</string>
+    <string name="location_earth_c_500a">Earth (C-500A)</string>
+    <string name="location_earth_c_137">Earth (C-137)</string>
+    <string name="location_earth_evil_ricks_target_dimension">Earth (Evil Rick\'s Target Dimension)</string>
+    <string name="location_nuptia_4">Nuptia 4</string>
+    <string name="location_fantasy_world">Fantasy World</string>
+    <string name="location_planet_squanch">Planet Squanch</string>
+    <string name="location_mr_goldenfolds_dream">Mr. Goldenfold\'s dream</string>
+    <string name="location_ricks_battery_microverse">Rick\'s Battery Microverse</string>
+    <string name="location_the_menagerie">The Menagerie</string>
+    <string name="location_hideout_planet">Hideout Planet</string>
+    <string name="location_zigerions_base">Zigerion\'s Base</string>
+    <string name="location_giants_town">Giant\'s Town</string>
+    <string name="location_unitys_planet">Unity\'s Planet</string>
+    <string name="location_dorian_5">Dorian 5</string>
+    <string name="location_ricks_memories">Rick\'s Memories</string>
+    <string name="location_st_gloopy_noops_hospital">St. Gloopy Noops Hospital</string>
+    <string name="location_roy_a_life_well_lived">Roy: A Life Well Lived</string>
+    <string name="location_resort_planet">Resort Planet</string>
+    <string name="location_interdimensional_customs">Interdimensional Customs</string>
+    <string name="location_galactic_federation_prison">Galactic Federation Prison</string>
+    <string name="location_hamster_in_butt_world">Hamster in Butt World</string>
+    <string name="location_earth_giant_telepathic_spiders_dimension">Earth (Giant Telepathic Spiders Dimension)</string>
+    <string name="location_alphabetrium">Alphabetrium</string>
+    <string name="location_gazorpazorp">Gazorpazorp</string>
+    <string name="location_jerryboree">Jerryboree</string>
+    <string name="location_pluto">Pluto</string>
+    <string name="location_kyles_teenyverse">Kyle\'s Teenyverse</string>
+    <string name="location_plane">Plane</string>
+    <!-- Gender-specific Status Options (English Fallbacks) -->
+    <string name="status_alive_female">Alive</string>
+    <string name="status_alive_male">Alive</string>
+    <string name="status_alive_genderless">Alive</string>
+    <string name="status_dead_female">Dead</string>
+    <string name="status_dead_male">Dead</string>
+    <string name="status_dead_genderless">Dead</string>
+
 </resources>

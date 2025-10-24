@@ -5,7 +5,6 @@ import androidx.paging.LoadType
 import androidx.paging.PagingState
 import androidx.paging.RemoteMediator
 import androidx.room.withTransaction
-import okio.IOException
 import retrofit2.HttpException
 import ru.practicum.rickandmorty.data.local.AppDatabase
 import ru.practicum.rickandmorty.data.local.CharacterEntity
@@ -13,7 +12,9 @@ import ru.practicum.rickandmorty.data.local.RemoteKey
 import ru.practicum.rickandmorty.data.mappers.toEntity
 import ru.practicum.rickandmorty.data.network.ApiService
 import ru.practicum.rickandmorty.domain.models.QueryParams
-import javax.net.ssl.HttpsURLConnection
+import java.io.IOException
+import java.net.HttpURLConnection
+import java.util.concurrent.TimeUnit
 
 @OptIn(ExperimentalPagingApi::class)
 class CharacterRemoteMediator(
@@ -24,6 +25,17 @@ class CharacterRemoteMediator(
 
     private val characterDao = database.characterDao()
     private val remoteKeyDao = database.remoteKeyDao()
+
+    override suspend fun initialize(): InitializeAction {
+        val cacheTimeout = TimeUnit.HOURS.toMillis(1)
+        val lastUpdated = remoteKeyDao.getLastUpdated() ?: 0L
+
+        return if (System.currentTimeMillis() - lastUpdated < cacheTimeout) {
+            InitializeAction.SKIP_INITIAL_REFRESH
+        } else {
+            InitializeAction.LAUNCH_INITIAL_REFRESH
+        }
+    }
 
     override suspend fun load(
         loadType: LoadType,
@@ -50,17 +62,22 @@ class CharacterRemoteMediator(
 
             val characters = response.results
             val endOfPaginationReached = response.info.next == null
+            val currentTime = System.currentTimeMillis()
 
             database.withTransaction {
                 if (loadType == LoadType.REFRESH) {
-                    characterDao.clearAllCharacters()
                     remoteKeyDao.clearAllRemoteKeys()
                 }
 
                 val prevKey = if (page == 1) null else page - 1
                 val nextKey = if (endOfPaginationReached) null else page + 1
                 val keys = characters.map {
-                    RemoteKey(characterId = it.id, prevKey = prevKey, nextKey = nextKey)
+                    RemoteKey(
+                        characterId = it.id,
+                        prevKey = prevKey,
+                        nextKey = nextKey,
+                        lastUpdated = currentTime
+                    )
                 }
 
                 val charactersEntities = characters.map { it.toEntity() }
@@ -74,7 +91,7 @@ class CharacterRemoteMediator(
         } catch (e: IOException) {
             MediatorResult.Error(e)
         } catch (e: HttpException) {
-            if (e.code() == HttpsURLConnection.HTTP_NOT_FOUND) {
+            if (e.code() == HttpURLConnection.HTTP_NOT_FOUND) {
                 return MediatorResult.Success(endOfPaginationReached = true)
             }
             return MediatorResult.Error(e)

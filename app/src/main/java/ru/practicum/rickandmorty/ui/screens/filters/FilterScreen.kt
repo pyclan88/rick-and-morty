@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.selection.selectable
 import androidx.compose.material3.Button
@@ -25,6 +26,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.font.FontWeight
@@ -40,18 +42,18 @@ fun FiltersScreen(
     onApplyClick: (Filters) -> Unit,
     initialFilters: Filters
 ) {
-    var status by remember { mutableStateOf(initialFilters.status) }
-    var gender by remember { mutableStateOf(initialFilters.gender) }
+    var selectedStatus by remember { mutableStateOf(initialFilters.status) }
+    var selectedGender by remember { mutableStateOf(initialFilters.gender) }
 
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Filters") },
+                title = { Text(stringResource(R.string.filters_title)) },
                 navigationIcon = {
                     IconButton(onClick = onBackClick) {
                         Icon(
                             imageVector = ImageVector.vectorResource(id = R.drawable.ic_arrow_back),
-                            contentDescription = "Back"
+                            contentDescription = stringResource(R.string.filters_back_description)
                         )
                     }
                 }
@@ -61,13 +63,11 @@ fun FiltersScreen(
             Button(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(16.dp),
-                onClick = {
-                    val newFilter = Filters(status = status, gender = gender)
-                    onApplyClick(newFilter)
-                },
+                    .padding(16.dp)
+                    .navigationBarsPadding(),
+                onClick = { onApplyClick(Filters(status = selectedStatus, gender = selectedGender)) },
             ) {
-                Text("Apply Filters")
+                Text(stringResource(R.string.filters_apply))
             }
         }
     ) { paddingValues ->
@@ -78,21 +78,44 @@ fun FiltersScreen(
                 .padding(16.dp)
         ) {
             FilterSection(
-                title = "Status",
+                title = stringResource(R.string.filters_status_title),
                 options = listOf("Alive", "Dead", "unknown"),
-                selectedOption = status,
-                onOptionSelected = { newStatus -> status = newStatus }
+                selectedOption = selectedStatus,
+                onOptionSelected = { selectedStatus = it },
+                labelForOption = { option -> statusLabel(option) }
             )
 
             Spacer(modifier = Modifier.height(24.dp))
 
             FilterSection(
-                title = "Gender",
+                title = stringResource(R.string.filters_gender_title),
                 options = listOf("Female", "Male", "Genderless", "unknown"),
-                selectedOption = gender,
-                onOptionSelected = { newGender -> gender = newGender }
+                selectedOption = selectedGender,
+                onOptionSelected = { selectedGender = it },
+                labelForOption = { option -> genderLabel(option) }
             )
         }
+    }
+}
+
+@Composable
+private fun statusLabel(status: String?): String {
+    return when (status) {
+        "Alive" -> stringResource(R.string.filter_option_alive)
+        "Dead" -> stringResource(R.string.filter_option_dead)
+        "unknown" -> stringResource(R.string.filter_option_unknown)
+        else -> stringResource(R.string.filters_any_option)
+    }
+}
+
+@Composable
+private fun genderLabel(gender: String?): String {
+    return when (gender) {
+        "Female" -> stringResource(R.string.filter_option_female)
+        "Male" -> stringResource(R.string.filter_option_male)
+        "Genderless" -> stringResource(R.string.filter_option_genderless)
+        "unknown" -> stringResource(R.string.filter_option_unknown)
+        else -> stringResource(R.string.filters_any_option)
     }
 }
 
@@ -101,7 +124,8 @@ private fun FilterSection(
     title: String,
     options: List<String>,
     selectedOption: String?,
-    onOptionSelected: (String?) -> Unit
+    onOptionSelected: (String?) -> Unit,
+    labelForOption: @Composable (String?) -> String
 ) {
     Column {
         Text(
@@ -130,7 +154,7 @@ private fun FilterSection(
                     onClick = null
                 )
                 Text(
-                    text = option ?: "Any",
+                    text = labelForOption(option),
                     style = MaterialTheme.typography.bodyLarge,
                     modifier = Modifier.padding(start = 16.dp)
                 )
@@ -157,6 +181,7 @@ private fun FilterSectionPreview() {
         title = "Status",
         options = listOf("Alive", "Dead", "Unknown"),
         selectedOption = "Alive",
-        onOptionSelected = {}
+        onOptionSelected = {},
+        labelForOption = { it ?: "Any" }
     )
 }
