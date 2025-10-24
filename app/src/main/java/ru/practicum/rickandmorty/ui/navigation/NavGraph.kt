@@ -9,7 +9,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import org.koin.androidx.compose.koinViewModel
-import ru.practicum.rickandmorty.domain.models.Filters
+import ru.practicum.rickandmorty.domain.models.CharacterFilters
 import ru.practicum.rickandmorty.ui.screens.details.CharacterDetailsScreen
 import ru.practicum.rickandmorty.ui.screens.filters.FiltersScreen
 import ru.practicum.rickandmorty.ui.screens.home.HomeScreen
@@ -30,15 +30,15 @@ fun NavGraph(
         startDestination = startDestination
     ) {
         composable(Screen.Home.route) {
-            val newFilters = navController.currentBackStackEntry
+            val newCharacterFilters = navController.currentBackStackEntry
                 ?.savedStateHandle
-                ?.get<Filters>(FILTERS_RESULT_KEY)
+                ?.get<CharacterFilters>(FILTERS_RESULT_KEY)
 
-            if (newFilters != null) {
-                viewModel.onFiltersChanged(newFilters)
+            if (newCharacterFilters != null) {
+                viewModel.onFiltersChanged(newCharacterFilters)
                 navController.currentBackStackEntry
                     ?.savedStateHandle
-                    ?.remove<Filters>(FILTERS_RESULT_KEY)
+                    ?.remove<CharacterFilters>(FILTERS_RESULT_KEY)
             }
 
             HomeScreen(

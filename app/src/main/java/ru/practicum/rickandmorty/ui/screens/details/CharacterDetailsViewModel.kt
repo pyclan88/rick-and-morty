@@ -3,16 +3,13 @@ package ru.practicum.rickandmorty.ui.screens.details
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
-import ru.practicum.rickandmorty.domain.usecase.GetCharacterByIdUseCase
+import ru.practicum.rickandmorty.domain.api.CharactersInteractor
 
 class CharacterDetailsViewModel(
-    private val getCharacterDetailsUseCase: GetCharacterByIdUseCase,
+    private val charactersInteractor: CharactersInteractor,
     private val characterId: Int
 ) : ViewModel() {
 
@@ -26,10 +23,10 @@ class CharacterDetailsViewModel(
     private fun loadCharacter() {
         viewModelScope.launch {
             try {
-                val character = getCharacterDetailsUseCase(characterId).first()
+                val character = charactersInteractor.getCharacterById(characterId).first()
                 _state.value = CharacterDetailsState.Content(character)
             } catch (e: Exception) {
-                _state.value = CharacterDetailsState.Error("Could not load character from cache.")
+                _state.value = CharacterDetailsState.Error("Could not load character from cache, error: $e")
             }
         }
     }

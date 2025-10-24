@@ -1,6 +1,5 @@
 package ru.practicum.rickandmorty.data.local
 
-import androidx.compose.ui.input.key.type
 import androidx.room.TypeConverter
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken

@@ -1,0 +1,115 @@
+<resources>
+    <string name="app_name">Рик и Морти</string>
+    <string name="favorite_icon_description">Переключить Избранное</string>
+    <!-- Nothing Found Screen -->
+    <string name="nothing_found_wubba">Вабба-лабба-даб-даб!</string>
+    <string name="nothing_found_query_and_filters">Даже портальная пушка Рика не смогла найти персонажей с именем \'%1$s\', соответствующих вашим фильтрам. Попробуйте убрать фильтр!</string>
+    <string name="nothing_found_query_only">Даже портальная пушка Рика не нашла ничего по запросу \'%1$s\'. Попробуйте другой поиск!</string>
+    <string name="nothing_found_filters_only">Нет персонажей, соответствующих вашим фильтрам.</string>
+    <string name="nothing_found_fallback">Здесь ничего нет… что странно.</string>
+    <!-- Filters Screen -->
+    <string name="filters_title">Фильтры</string>
+    <string name="filters_apply">Применить фильтры</string>
+    <string name="filters_back_description">Назад</string>
+    <string name="filters_status_title">Статус</string>
+    <string name="filters_gender_title">Пол</string>
+    <string name="filters_any_option">Любой</string>
+    <string name="filters_favorites_only_title">Показать Только Избранных</string>
+    <string name="filters_species_title">Раса</string>
+    <string name="filters_type_label">Тип</string>
+    <string name="filters_species_custom_label">Или введите свою расу</string>
+    <!-- Filter Options -->
+    <string name="filter_option_alive">Жив</string>
+    <string name="filter_option_dead">Мёртв</string>
+    <string name="filter_option_female">Женщина</string>
+    <string name="filter_option_male">Мужчина</string>
+    <string name="filter_option_genderless">Бесполый</string>
+    <string name="filter_option_unknown">неизвестно</string>
+    <!-- Home Screen & Top Bar -->
+    <string name="home_title_characters">Персонажи</string>
+    <string name="search_placeholder">Поиск…</string>
+    <string name="search_characters">Поиск Персонажей</string>
+    <string name="close_search_icon_description">Закрыть Поиск</string>
+    <string name="filters_fab_description">Показать фильтры</string>
+    <string name="snackbar_offline">Вы оффлайн</string>
+    <string name="snackbar_online">Снова в сети!</string>
+    <!-- Action Buttons -->
+    <string name="action_retry">Повторить</string>
+    <!-- Character Details Screen -->
+    <string name="details_title">Детали Персонажа</string>
+    <string name="details_back_description">Назад</string>
+    <string name="details_error_message">Ошибка: %1$s</string>
+    <string name="details_section_properties">Свойства</string>
+    <string name="details_label_status">Статус</string>
+    <string name="details_label_species">Раса</string>
+    <string name="details_label_gender">Пол</string>
+    <string name="details_label_type">Тип</string>
+    <string name="details_section_location">Местоположение</string>
+    <string name="details_label_origin">Происхождение</string>
+    <string name="details_label_last_location">Последнее\nместоположение</string>
+    <string name="details_section_appearances">Появления</string>
+    <string name="details_label_episode_count">Количество эпизодов</string>
+    <!-- Character Item -->
+    <string name="character_item_status_species">%1$s - %2$s</string>
+    <string name="character_item_gender_label">Пол: %1$s</string>
+    <string name="character_item_image_description">Изображение %1$s</string>
+    <!-- Species Options -->
+    <string name="species_human">Человек</string>
+    <string name="species_alien">Инопланетянин</string>
+    <string name="species_humanoid">Гуманоид</string>
+    <string name="species_poopybutthole">Жопосранчик</string>
+    <string name="species_mythological">Мифологическое существо</string>
+    <string name="species_animal">Животное</string>
+    <string name="species_robot">Робот</string>
+    <string name="species_cronenberg">Кроненберг</string>
+    <string name="species_disease">Болезнь</string>
+    <!-- Location Names -->
+    <string name="location_citadel_of_ricks">Цитадель Риков</string>
+    <string name="location_earth_replacement_dimension">Земля (Мир-заменитель)</string>
+    <string name="location_abadango">Абаданго</string>
+    <string name="location_testicle_monster_dimension">Измерение Яичных Монстров</string>
+    <string name="location_worldenders_lair">Логово Разрушителя Миров</string>
+    <string name="location_anatomy_park">Анатомический Парк</string>
+    <string name="location_interdimensional_cable">Межпространственное Кабельное ТВ</string>
+    <string name="location_immortality_field_resort">Курорт Поля Бессмертия</string>
+    <string name="location_signus_5_expanse">Просторы Сигнуса-5</string>
+    <string name="location_post_apocalyptic_earth">Постапокалиптическая Земля</string>
+    <string name="location_purge_planet">Планета Чистки</string>
+    <string name="location_venzenulon_7">Вензенулон-7</string>
+    <string name="location_bepis_9">Бепис-9</string>
+    <string name="location_earth_c_500a">Земля (C-500A)</string>
+    <string name="location_earth_c_137">Земля (C-137)</string>
+    <string name="location_earth_evil_ricks_target_dimension">Земля (Мир-цель Злого Рика)</string>
+    <string name="location_nuptia_4">Нуптия-4</string>
+    <string name="location_fantasy_world">Мир Фантазий</string>
+    <string name="location_planet_squanch">Планета Сквонч</string>
+    <string name="location_mr_goldenfolds_dream">Сон мистера Голденфолда</string>
+    <string name="location_ricks_battery_microverse">Микровселенная Батареи Рика</string>
+    <string name="location_the_menagerie">Зверинец</string>
+    <string name="location_hideout_planet">Планета-убежище</string>
+    <string name="location_zigerions_base">База Зигерионцев</string>
+    <string name="location_giants_town">Город Гигантов</string>
+    <string name="location_unitys_planet">Планета Юнити</string>
+    <string name="location_dorian_5">Дориан-5</string>
+    <string name="location_ricks_memories">Воспоминания Рика</string>
+    <string name="location_st_gloopy_noops_hospital">Больница Святого Глупи-Нупса</string>
+    <string name="location_roy_a_life_well_lived">Рой: Хорошо прожитая жизнь</string>
+    <string name="location_resort_planet">Курортная планета</string>
+    <string name="location_interdimensional_customs">Межпространственная Таможня</string>
+    <string name="location_galactic_federation_prison">Тюрьма Галактической Федерации</string>
+    <string name="location_hamster_in_butt_world">Мир Хомяков в Заду</string>
+    <string name="location_earth_giant_telepathic_spiders_dimension">Земля (Измерение Гигантских Телепатических Пауков)</string>
+    <string name="location_alphabetrium">Алфавитриум</string>
+    <string name="location_gazorpazorp">Газорпазорп</string>
+    <string name="location_jerryboree">Джеррибори</string>
+    <string name="location_pluto">Плутон</string>
+    <string name="location_kyles_teenyverse">Минивселенная Кайла</string>
+    <string name="location_plane">Самолёт</string>
+    <!-- Gender-specific Status Options -->
+    <string name="status_alive_female">Жива</string>
+    <string name="status_alive_male">Жив</string>
+    <string name="status_alive_genderless">Живо</string>
+    <string name="status_dead_female">Мертва</string>
+    <string name="status_dead_male">Мёртв</string>
+    <string name="status_dead_genderless">Мертво</string>
+</resources>

@@ -10,4 +10,7 @@ data class Filters(
     val species: String? = null,
     val type: String? = null,
     val gender: String? = null
-) : Parcelable
+) : Parcelable {
+
+    fun areActive() = status != null || gender != null
+}

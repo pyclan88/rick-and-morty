@@ -8,14 +8,14 @@ import ru.practicum.rickandmorty.ui.screens.home.HomeScreenViewModel
 val viewModelModule = module {
     viewModel {
         HomeScreenViewModel(
-            getCharactersStreamUseCase = get(),
+            charactersInteractor = get(),
             connectivityObserver = get()
         )
     }
 
     viewModel { (id: Int) ->
         CharacterDetailsViewModel(
-            getCharacterDetailsUseCase = get(),
+            charactersInteractor = get(),
             characterId = id
         )
     }

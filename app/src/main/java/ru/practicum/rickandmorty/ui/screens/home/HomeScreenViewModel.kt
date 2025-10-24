@@ -15,20 +15,20 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
+import ru.practicum.rickandmorty.domain.api.CharactersInteractor
 import ru.practicum.rickandmorty.domain.models.Character
-import ru.practicum.rickandmorty.domain.models.Filters
-import ru.practicum.rickandmorty.domain.models.QueryParams
-import ru.practicum.rickandmorty.domain.usecase.GetCharactersStreamUseCase
+import ru.practicum.rickandmorty.domain.models.CharacterFilters
 import ru.practicum.rickandmorty.utils.ConnectivityObserver
 
 class HomeScreenViewModel(
-    private val getCharactersStreamUseCase: GetCharactersStreamUseCase,
+    private val charactersInteractor: CharactersInteractor,
     connectivityObserver: ConnectivityObserver
 ) : ViewModel() {
 
     private val _searchQuery = MutableStateFlow("")
 
-    private val _filters = MutableStateFlow(Filters())
+    private val _filters = MutableStateFlow<CharacterFilters>(CharacterFilters())
     val filters = _filters.asStateFlow()
 
     val networkStatus: StateFlow<ConnectivityObserver.Status> = connectivityObserver.observe()
@@ -38,22 +38,27 @@ class HomeScreenViewModel(
             initialValue = ConnectivityObserver.Status.Unavailable
         )
 
-
     @OptIn(FlowPreview::class, ExperimentalCoroutinesApi::class)
     val characters: Flow<PagingData<Character>> = combine(
         _searchQuery.debounce(500),
         _filters
-    ) { query, filters ->
-        QueryParams(query = query, filters = filters)
-    }.flatMapLatest { queryParams ->
-        getCharactersStreamUseCase(queryParams)
+    ) { query, filter ->
+        query to filter
+    }.flatMapLatest { (query, filter) ->
+        charactersInteractor.getCharactersStream(query, filter)
     }.cachedIn(viewModelScope)
 
     fun onSearchQueryChanged(query: String) {
         _searchQuery.value = query
     }
 
-    fun onFiltersChanged(newFilters: Filters) {
+    fun onFiltersChanged(newFilters: CharacterFilters) {
         _filters.value = newFilters
+    }
+
+    fun onFavoriteClick(character: Character) {
+        viewModelScope.launch {
+            charactersInteractor.updateFavoriteStatus(character.id, !character.isFavorite)
+        }
     }
 }

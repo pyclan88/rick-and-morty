@@ -11,6 +11,9 @@ interface RemoteKeyDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertAll(remoteKey: List<RemoteKey>)
 
+    @Query("SELECT lastUpdated FROM remote_keys ORDER BY lastUpdated DESC LIMIT 1")
+    suspend fun getLastUpdated(): Long?
+
     @Query("SELECT * FROM remote_keys WHERE characterId = :id")
     suspend fun remoteKeyByCharacterId(id: Int): RemoteKey?
 

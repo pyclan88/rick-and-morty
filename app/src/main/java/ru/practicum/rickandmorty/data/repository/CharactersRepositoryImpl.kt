@@ -5,15 +5,19 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.map
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.withContext
 import ru.practicum.rickandmorty.data.local.AppDatabase
-import ru.practicum.rickandmorty.data.mappers.toDomain
+import ru.practicum.rickandmorty.data.mapper.toDomain
 import ru.practicum.rickandmorty.data.network.ApiService
 import ru.practicum.rickandmorty.data.paging.CharacterRemoteMediator
 import ru.practicum.rickandmorty.domain.api.CharactersRepository
 import ru.practicum.rickandmorty.domain.models.Character
-import ru.practicum.rickandmorty.domain.models.QueryParams
+import ru.practicum.rickandmorty.domain.models.CharacterFilters
+
+const val PAGE_SIZE = 20
 
 class CharactersRepositoryImpl(
     private val database: AppDatabase,
@@ -21,16 +25,27 @@ class CharactersRepositoryImpl(
 ) : CharactersRepository {
 
     @OptIn(ExperimentalPagingApi::class)
-    override fun getCharactersStream(params: QueryParams): Flow<PagingData<Character>> {
+    override fun getCharactersStream(query: String?, filters: CharacterFilters): Flow<PagingData<Character>> {
         return Pager(
-            config = PagingConfig(pageSize = 20),
+            config = PagingConfig(
+                pageSize = PAGE_SIZE,
+                prefetchDistance = 5,
+            ),
             remoteMediator = CharacterRemoteMediator(
                 apiService = apiService,
                 database = database,
-                params = params
+                query = query,
+                filters = filters
             ),
             pagingSourceFactory = {
-                database.characterDao().pagingSource(params.query)
+                database.characterDao().pagingSource(
+                    name = query,
+                    status = filters.status,
+                    gender = filters.gender,
+                    species = filters.species,
+                    type = filters.type,
+                    isFavoritesOnly = filters.isFavoritesOnly
+                )
             }
         ).flow.map { pagingData ->
             pagingData.map { entity ->
@@ -44,5 +59,11 @@ class CharactersRepositoryImpl(
             .map { entity ->
                 entity.toDomain()
             }
+    }
+
+    override suspend fun updateFavoriteStatus(id: Int, isFavorite: Boolean) {
+        withContext(Dispatchers.IO) {
+            database.characterDao().updateFavoriteStatus(id, isFavorite)
+        }
     }
 }
