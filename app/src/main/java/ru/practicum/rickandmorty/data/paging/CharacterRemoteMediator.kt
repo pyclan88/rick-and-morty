@@ -50,18 +50,16 @@ class CharacterRemoteMediator(
             return MediatorResult.Success(endOfPaginationReached = true)
         }
 
-        return try {
-            val page = when (loadType) {
-                LoadType.REFRESH -> 1
-                LoadType.PREPEND -> return MediatorResult.Success(endOfPaginationReached = true)
-                LoadType.APPEND -> {
-                    val remoteKey = getLastRemoteKey(state)
-                        ?: return MediatorResult.Success(endOfPaginationReached = true)
-                    remoteKey.nextKey
-                        ?: return MediatorResult.Success(endOfPaginationReached = true)
-                }
+        val page = when (loadType) {
+            LoadType.REFRESH -> 1
+            LoadType.PREPEND -> return MediatorResult.Success(endOfPaginationReached = true)
+            LoadType.APPEND -> {
+                val remoteKey = getLastRemoteKey(state)
+                remoteKey?.nextKey ?: (state.pages.count { it.data.isNotEmpty() } + 1)
             }
+        }
 
+        return try {
             val response = apiService.filterCharacters(
                 page = page,
                 name = query?.ifBlank { null },
@@ -73,7 +71,6 @@ class CharacterRemoteMediator(
 
             val characters = response.results
             val endOfPaginationReached = response.info.next == null
-            val currentTime = System.currentTimeMillis()
 
             database.withTransaction {
                 if (loadType == LoadType.REFRESH) {
@@ -82,32 +79,34 @@ class CharacterRemoteMediator(
 
                 val prevKey = if (page == 1) null else page - 1
                 val nextKey = if (endOfPaginationReached) null else page + 1
-                val keys = characters.map {
-                    RemoteKey(
-                        characterId = it.id,
-                        prevKey = prevKey,
-                        nextKey = nextKey,
-                        lastUpdated = currentTime
-                    )
-                }
+                val currentTime = System.currentTimeMillis()
 
-                val charactersEntities = characters.map { it.toEntity() }
+                remoteKeyDao.insertAll(
+                    characters.map {
+                        RemoteKey(
+                            characterId = it.id,
+                            prevKey = prevKey,
+                            nextKey = nextKey,
+                            lastUpdated = currentTime
+                        )
+                    }
+                )
 
-                remoteKeyDao.insertAll(keys)
-                characterDao.insertAll(charactersEntities)
+                characterDao.insertAll(characters.map { it.toEntity() })
             }
 
-            return MediatorResult.Success(endOfPaginationReached = endOfPaginationReached)
-
+            MediatorResult.Success(endOfPaginationReached = endOfPaginationReached)
         } catch (e: IOException) {
             MediatorResult.Error(e)
         } catch (e: HttpException) {
             if (e.code() == HttpURLConnection.HTTP_NOT_FOUND) {
-                return MediatorResult.Success(endOfPaginationReached = true)
+                MediatorResult.Success(endOfPaginationReached = true)
+            } else {
+                MediatorResult.Error(e)
             }
-            return MediatorResult.Error(e)
         }
     }
+
 
     private suspend fun getLastRemoteKey(state: PagingState<Int, CharacterEntity>): RemoteKey? {
         return state.pages
