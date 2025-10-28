@@ -77,6 +77,14 @@ class CharacterRemoteMediator(
                     remoteKeyDao.clearAllRemoteKeys()
                 }
 
+                val favoriteCharacterIds = characterDao.getFavoriteCharacterIds()
+
+                val entities = characters.map { dto ->
+                    dto.toEntity().copy(
+                        isFavorite = favoriteCharacterIds.contains(dto.id)
+                    )
+                }
+
                 val prevKey = if (page == 1) null else page - 1
                 val nextKey = if (endOfPaginationReached) null else page + 1
                 val currentTime = System.currentTimeMillis()
@@ -92,7 +100,7 @@ class CharacterRemoteMediator(
                     }
                 )
 
-                characterDao.insertAll(characters.map { it.toEntity() })
+                characterDao.insertAll(entities)
             }
 
             MediatorResult.Success(endOfPaginationReached = endOfPaginationReached)

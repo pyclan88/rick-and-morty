@@ -1,18 +1,19 @@
 package ru.practicum.rickandmorty.data.dto
 
-import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class CharacterDto(
-    @SerializedName("id") val id: Int,
-    @SerializedName("name") val name: String,
-    @SerializedName("status") val status: String,
-    @SerializedName("species") val species: String,
-    @SerializedName("type") val type: String,
-    @SerializedName("gender") val gender: String,
-    @SerializedName("origin") val origin: OriginDto,
-    @SerializedName("location") val location: LocationDto,
-    @SerializedName("image") val image: String,
-    @SerializedName("episode") val episode: List<String>,
-    @SerializedName("url") val url: String,
-    @SerializedName("created") val created: String
+    val id: Int,
+    val name: String,
+    val status: String,
+    val species: String,
+    val type: String,
+    val gender: String,
+    val origin: OriginDto,
+    val location: LocationDto,
+    val image: String,
+    val episode: List<String>,
+    val url: String,
+    val created: String
 )

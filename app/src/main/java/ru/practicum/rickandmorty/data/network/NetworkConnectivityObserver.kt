@@ -11,7 +11,7 @@ import kotlinx.coroutines.launch
 import ru.practicum.rickandmorty.utils.ConnectivityObserver
 
 class NetworkConnectivityObserver(
-    private val context: Context
+    context: Context
 ) : ConnectivityObserver {
 
     private val connectivityManager =

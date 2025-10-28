@@ -8,43 +8,43 @@ import ru.practicum.rickandmorty.domain.models.Character
 import ru.practicum.rickandmorty.domain.models.Location
 import ru.practicum.rickandmorty.domain.models.Origin
 
-fun CharacterDto.toEntity(): CharacterEntity = CharacterEntity(
-    id = this.id,
-    name = this.name,
-    status = this.status,
-    species = this.species,
-    type = this.type,
-    gender = this.gender,
-    origin = this.origin.toDomain(),
-    location = this.location.toDomain(),
-    image = this.image,
-    episode = this.episode,
-    url = this.url,
-    created = this.created,
+fun CharacterDto.toEntity() = CharacterEntity(
+    id = id,
+    name = name,
+    status = status,
+    species = species,
+    type = type,
+    gender = gender,
+    origin = origin.toDomain(),
+    location = location.toDomain(),
+    image = image,
+    episode = episode,
+    url = url,
+    created = created,
 )
 
-fun OriginDto.toDomain(): Origin = Origin(
+fun OriginDto.toDomain() = Origin(
     name = name,
     url = url
 )
 
-fun LocationDto.toDomain(): Location = Location(
+fun LocationDto.toDomain() = Location(
     name = name,
     url = url
 )
 
-fun CharacterEntity.toDomain(): Character = Character(
-    id = this.id,
-    name = this.name,
-    status = this.status,
-    species = this.species,
-    type = this.type,
-    gender = this.gender,
-    origin = this.origin,
-    location = this.location,
-    image = this.image,
-    episode = this.episode,
-    url = this.url,
-    created = this.created,
-    isFavorite = this.isFavorite
+fun CharacterEntity.toDomain() = Character(
+    id = id,
+    name = name,
+    status = status,
+    species = species,
+    type = type,
+    gender = gender,
+    origin = origin,
+    location = location,
+    image = image,
+    episode = episode,
+    url = url,
+    created = created,
+    isFavorite = isFavorite
 )

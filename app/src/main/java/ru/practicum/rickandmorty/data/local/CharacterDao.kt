@@ -22,7 +22,7 @@ interface CharacterDao {
             (:gender IS NULL OR gender = :gender) AND
             (:species IS NULL OR species = :species) AND
             (:type IS NULL OR type = :type) AND
-            (:isFavoritesOnly = 0 OR isFavorite = 1)
+            (:isFavoritesOnly = 0 OR is_favorite = 1)
         ORDER BY id ASC
         """
     )
@@ -38,6 +38,9 @@ interface CharacterDao {
     @Query("SELECT * FROM characters WHERE id = :id")
     fun getCharacterById(id: Int): Flow<CharacterEntity>
 
-    @Query("UPDATE characters SET isFavorite = :isFavorite WHERE id = :id")
+    @Query("UPDATE characters SET is_favorite = :isFavorite WHERE id = :id")
     suspend fun updateFavoriteStatus(id: Int, isFavorite: Boolean)
+
+    @Query("SELECT id FROM characters WHERE is_favorite = 1")
+    suspend fun getFavoriteCharacterIds(): List<Int>
 }
