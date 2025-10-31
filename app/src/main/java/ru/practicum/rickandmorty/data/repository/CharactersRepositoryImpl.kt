@@ -25,11 +25,15 @@ class CharactersRepositoryImpl(
 ) : CharactersRepository {
 
     @OptIn(ExperimentalPagingApi::class)
-    override fun getCharactersStream(query: String?, filters: CharacterFilters): Flow<PagingData<Character>> {
+    override fun getCharactersStream(
+        query: String?,
+        filters: CharacterFilters
+    ): Flow<PagingData<Character>> {
         return Pager(
             config = PagingConfig(
                 pageSize = PAGE_SIZE,
                 prefetchDistance = 5,
+                initialLoadSize = PAGE_SIZE,
             ),
             remoteMediator = CharacterRemoteMediator(
                 apiService = apiService,

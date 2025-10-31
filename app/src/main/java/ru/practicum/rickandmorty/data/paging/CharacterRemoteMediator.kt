@@ -54,8 +54,9 @@ class CharacterRemoteMediator(
             LoadType.REFRESH -> 1
             LoadType.PREPEND -> return MediatorResult.Success(endOfPaginationReached = true)
             LoadType.APPEND -> {
-                val remoteKey = getLastRemoteKey(state)
-                remoteKey?.nextKey ?: (state.pages.count { it.data.isNotEmpty() } + 1)
+                val remoteKey = getRemoteKeyForLastItem()
+
+                remoteKey?.nextKey ?: return MediatorResult.Success(endOfPaginationReached = true)
             }
         }
 
@@ -115,11 +116,7 @@ class CharacterRemoteMediator(
         }
     }
 
-
-    private suspend fun getLastRemoteKey(state: PagingState<Int, CharacterEntity>): RemoteKey? {
-        return state.pages
-            .lastOrNull { it.data.isNotEmpty() }
-            ?.data?.lastOrNull()
-            ?.let { character -> remoteKeyDao.remoteKeyByCharacterId(character.id) }
+    private suspend fun getRemoteKeyForLastItem(): RemoteKey? {
+        return remoteKeyDao.getLastRemoteKey()
     }
 }
