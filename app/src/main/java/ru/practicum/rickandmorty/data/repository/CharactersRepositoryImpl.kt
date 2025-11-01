@@ -32,7 +32,7 @@ class CharactersRepositoryImpl(
         return Pager(
             config = PagingConfig(
                 pageSize = PAGE_SIZE,
-                prefetchDistance = 5,
+                prefetchDistance = PAGE_SIZE,
                 initialLoadSize = PAGE_SIZE,
             ),
             remoteMediator = CharacterRemoteMediator(

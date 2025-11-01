@@ -96,12 +96,12 @@ fun HomeScreen(
             val loadState = characters.loadState
             val isListEmpty = characters.itemCount == 0
 
-            when {
-                loadState.refresh is LoadState.Loading -> {
+            when (loadState.refresh) {
+                is LoadState.Loading -> {
                     LoadingScreen(modifier = Modifier.padding(innerPadding))
                 }
 
-                loadState.refresh is LoadState.Error && isListEmpty -> {
+                is LoadState.Error if isListEmpty -> {
                     ErrorScreen(
                         modifier = Modifier.padding(innerPadding),
                         error = (loadState.refresh as LoadState.Error).error,
@@ -109,8 +109,7 @@ fun HomeScreen(
                     )
                 }
 
-                loadState.refresh is LoadState.NotLoading &&
-                        loadState.append.endOfPaginationReached &&
+                is LoadState.NotLoading if loadState.append.endOfPaginationReached &&
                         isListEmpty &&
                         (searchQuery.isNotBlank() || filters.areActive())
                     -> {

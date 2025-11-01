@@ -54,9 +54,11 @@ class CharacterRemoteMediator(
             LoadType.REFRESH -> 1
             LoadType.PREPEND -> return MediatorResult.Success(endOfPaginationReached = true)
             LoadType.APPEND -> {
-                val remoteKey = getRemoteKeyForLastItem()
+                val remoteKeyForLastItem = remoteKeyDao.getLastRemoteKey()
 
-                remoteKey?.nextKey ?: return MediatorResult.Success(endOfPaginationReached = true)
+                remoteKeyForLastItem?.nextKey ?: return MediatorResult.Success(
+                    endOfPaginationReached = true
+                )
             }
         }
 
@@ -86,20 +88,13 @@ class CharacterRemoteMediator(
                     )
                 }
 
-                val prevKey = if (page == 1) null else page - 1
-                val nextKey = if (endOfPaginationReached) null else page + 1
-                val currentTime = System.currentTimeMillis()
-
-                remoteKeyDao.insertAll(
-                    characters.map {
-                        RemoteKey(
-                            characterId = it.id,
-                            prevKey = prevKey,
-                            nextKey = nextKey,
-                            lastUpdated = currentTime
-                        )
-                    }
-                )
+                characters.lastOrNull()?.let { lastCharacter ->
+                    saveRemoteKey(
+                        page = page,
+                        characterId = lastCharacter.id,
+                        endOfPaginationReached = endOfPaginationReached
+                    )
+                }
 
                 characterDao.insertAll(entities)
             }
@@ -116,7 +111,22 @@ class CharacterRemoteMediator(
         }
     }
 
-    private suspend fun getRemoteKeyForLastItem(): RemoteKey? {
-        return remoteKeyDao.getLastRemoteKey()
+    private suspend fun saveRemoteKey(
+        page: Int,
+        characterId: Int,
+        endOfPaginationReached: Boolean
+    ) {
+        val prevKey = if (page == 1) null else page - 1
+        val nextKey = if (endOfPaginationReached) null else page + 1
+        val currentTime = System.currentTimeMillis()
+
+        remoteKeyDao.insertKey(
+            RemoteKey(
+                characterId = characterId,
+                prevKey = prevKey,
+                nextKey = nextKey,
+                lastUpdated = currentTime
+            )
+        )
     }
 }
